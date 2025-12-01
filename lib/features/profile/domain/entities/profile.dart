@@ -2,18 +2,19 @@ import 'package:equatable/equatable.dart';
 
 class Profile extends Equatable {
   final int id;
-  final String name;
+  final String fullname;
+
   final String email;
-  final String avatarUrl;
+  final String image;
 
   const Profile({
     required this.id,
-    required this.name,
+    required this.fullname,
+
     required this.email,
-    required this.avatarUrl,
+    required this.image,
   });
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [id, name, email, avatarUrl];
+  List<Object?> get props => [id, fullname, email, image];
 }
