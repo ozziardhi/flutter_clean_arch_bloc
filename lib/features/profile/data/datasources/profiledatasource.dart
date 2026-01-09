@@ -1,4 +1,7 @@
 import 'dart:convert';
+
+import 'package:cleanarch/core/error/exception.dart';
+
 import 'package:http/http.dart' as http;
 
 import '../models/profile.dart';
@@ -27,8 +30,10 @@ class ProfiledatasourceImplementation extends Profiledatasource {
       final data = dataBody['data'];
 
       return Profilemodel.fromJson(data);
+    } else if (response.statusCode == 404) {
+      throw const EmptyException(message: 'User not found');
     } else {
-      throw Exception('Failed to load user');
+      throw const GeneralException(message: 'cannot get user data');
     }
   }
 
@@ -36,11 +41,17 @@ class ProfiledatasourceImplementation extends Profiledatasource {
   Future<List<Profilemodel>> getalluser(int page) async {
     final url = Uri.parse("$_baseUrl/users?page=$page");
 
-    final response = await http.get(url, headers: _headers);
+    var response = await http.get(url, headers: _headers);
 
-    final dataBody = jsonDecode(response.body) as Map<String, dynamic>;
-    final rawData = dataBody['data'];
+    if (response.statusCode != 200) {
+      final dataBody = jsonDecode(response.body) as Map<String, dynamic>;
+      final rawData = dataBody['data'];
 
-    return Profilemodel.fromJsonList(rawData.cast<Map<String, dynamic>>());
+      return Profilemodel.fromJsonList(rawData.cast<Map<String, dynamic>>());
+    } else if (response.statusCode == 404) {
+      throw const EmptyException(message: 'Users not found');
+    } else {
+      throw const GeneralException(message: 'cannot get users data');
+    }
   }
 }

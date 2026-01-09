@@ -1,23 +1,23 @@
 class GeneralException implements Exception {
   final String message;
 
-  const GeneralException([this.message = 'An unexpected error occurred']);
+  const GeneralException({required this.message});
 }
 
 class ServerException implements Exception {
   final String message;
 
-  const ServerException([this.message = 'An unexpected error occurred']);
+  const ServerException({required this.message});
 }
 
 class StatuscodeException implements Exception {
   final String message;
 
-  const StatuscodeException([this.message = 'An unexpected error occurred']);
+  const StatuscodeException({required this.message});
 }
 
 class EmptyException implements Exception {
   final String message;
 
-  const EmptyException([this.message = 'An unexpected error occurred']);
+  const EmptyException({required this.message});
 }
