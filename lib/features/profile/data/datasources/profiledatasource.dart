@@ -21,12 +21,15 @@ class ProfiledatasourceImplementation extends Profiledatasource {
   Future<Profilemodel> getUser(int id) async {
     final url = Uri.parse("$_baseUrl/users/$id");
 
-    final response = await http.get(url, headers: _headers);
+    var response = await http.get(url, headers: _headers);
+    if (response.statusCode != 200) {
+      final dataBody = jsonDecode(response.body) as Map<String, dynamic>;
+      final data = dataBody['data'];
 
-    final dataBody = jsonDecode(response.body) as Map<String, dynamic>;
-    final data = dataBody['data'];
-
-    return Profilemodel.fromJson(data);
+      return Profilemodel.fromJson(data);
+    } else {
+      throw Exception('Failed to load user');
+    }
   }
 
   @override
