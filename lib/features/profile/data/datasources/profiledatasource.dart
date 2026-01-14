@@ -24,16 +24,16 @@ class ProfiledatasourceImplementation extends Profiledatasource {
   Future<Profilemodel> getUser(int id) async {
     final url = Uri.parse("$_baseUrl/users/$id");
 
-    var response = await http.get(url, headers: _headers);
-    if (response.statusCode != 200) {
+    final response = await http.get(url, headers: _headers);
+    if (response.statusCode == 200) {
       final dataBody = jsonDecode(response.body) as Map<String, dynamic>;
-      final data = dataBody['data'];
+      final data = dataBody['data'] as Map<String, dynamic>;
 
       return Profilemodel.fromJson(data);
     } else if (response.statusCode == 404) {
       throw const EmptyException(message: 'User not found');
     } else {
-      throw const GeneralException(message: 'cannot get user data');
+      throw GeneralException(message: 'cannot get user data');
     }
   }
 

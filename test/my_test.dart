@@ -3,8 +3,12 @@ import 'package:cleanarch/features/profile/data/datasources/profiledatasource.da
 void main() async {
   final ProfiledatasourceImplementation profiledatasourceImplementation =
       ProfiledatasourceImplementation();
-  var response = await profiledatasourceImplementation.getUser(10);
-  print(response.toJson());
+  try {
+    var response = await profiledatasourceImplementation.getUser(1);
+    print(response.toJson());
+  } catch (e) {
+    print(e);
+  }
 
   // untuk alluser
   // var response = await profiledatasourceImplementation.getalluser(2);
