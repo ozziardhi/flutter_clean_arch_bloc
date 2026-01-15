@@ -22,25 +22,29 @@ Future<void> main() async {
     avatarUrl: 'https://image.com/$userId',
   );
 
-  test('profile remote data source - Berhasil', () async {
-    when(datasource.getUser(userId)).thenAnswer((_) async => fakeprofilemodel);
+  group('Profile Remote Data Source Test', () {
+    test('Berhasil', () async {
+      when(
+        datasource.getUser(userId),
+      ).thenAnswer((_) async => fakeprofilemodel);
 
-    try {
-      var response = await datasource.getUser(1);
-      print(response.toJson());
-    } catch (e) {
-      print(e);
-    }
-  });
+      try {
+        var response = await datasource.getUser(1);
+        print(response.toJson());
+      } catch (e) {
+        print(e);
+      }
+    });
 
-  test('profile remote data source - gagal', () async {
-    when(datasource.getUser(userId)).thenThrow((Exception()));
+    test('gagal', () async {
+      when(datasource.getUser(userId)).thenThrow((Exception()));
 
-    try {
-      var response = await datasource.getUser(1);
-      print(response.toJson());
-    } catch (e) {
-      print(e);
-    }
+      try {
+        var response = await datasource.getUser(1);
+        print(response.toJson());
+      } catch (e) {
+        print(e);
+      }
+    });
   });
 }
