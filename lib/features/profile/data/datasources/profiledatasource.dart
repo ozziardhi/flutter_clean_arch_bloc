@@ -12,6 +12,10 @@ abstract class Profiledatasource {
 }
 
 class ProfiledatasourceImplementation extends Profiledatasource {
+  final http.Client client;
+
+  ProfiledatasourceImplementation({required this.client});
+
   static const _baseUrl = 'https://reqres.in/api';
 
   static const _headers = {
@@ -24,7 +28,7 @@ class ProfiledatasourceImplementation extends Profiledatasource {
   Future<Profilemodel> getUser(int id) async {
     final url = Uri.parse("$_baseUrl/users/$id");
 
-    final response = await http.get(url, headers: _headers);
+    final response = await client.get(url, headers: _headers);
     if (response.statusCode == 200) {
       final dataBody = jsonDecode(response.body) as Map<String, dynamic>;
       final data = dataBody['data'] as Map<String, dynamic>;
@@ -41,7 +45,7 @@ class ProfiledatasourceImplementation extends Profiledatasource {
   Future<List<Profilemodel>> getalluser(int page) async {
     final url = Uri.parse("$_baseUrl/users?page=$page");
 
-    var response = await http.get(url, headers: _headers);
+    var response = await client.get(url, headers: _headers);
 
     if (response.statusCode != 200) {
       final dataBody = jsonDecode(response.body) as Map<String, dynamic>;
